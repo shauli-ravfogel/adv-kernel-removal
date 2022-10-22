@@ -266,39 +266,14 @@ class MLP(torch.nn.Module):
         
         self.W = torch.nn.Linear(d_out, d_out)
         
-    def forward(self, x):
-        
-        #return F.tanh(self.lin2(self.BatchNorm1d_1(self.Dropout1d(F.relu(self.lin1(x)))))) + x
-        
-        #print(x.shape, type(x))
-        
-        # first layer
+    def forward(self, x):        
         h = F.relu(self.lin1(x))
         h = self.BatchNorm1d_1(self.Dropout1d(h))
-        
-        # second layer
-        
+                
         h = F.relu(self.lin2(h))
-        #h = self.BatchNorm1d_2(self.Dropout1d(h))
         o = self.lin3(h) + x
         return o
-        # third layer
-        
-        h = F.relu(self.lin3(h))
-        h = self.BatchNorm1d_3(h)
-        
-        # last layer
-        
-        o = self.lin4(h) + x
-        return o
-        
-        #x = self.convs(x)
-        #x = x.view(-1, self._to_linear)
-        #x = F.relu(self.fc1(x))
-        #x = self.Dropout1d(x)
-        #x = self.BatchNorm1d_1(x)
-        #x = self.fc2(x)
-        #return x
+
 
 def get_triplet_loss(z_pred, z_true, temp=10):
     
@@ -318,10 +293,7 @@ def get_l2_loss(z_pred, z_true, P_row):
     
 def calc_preimage_nystrom_mse(X, phi_X_debiased, X_dev, phi_X_dev_debiased, X1, S, kernel_func, gamma,degree,alpha,P,device="cpu"):
     
-    #Z = torch.tensor(X).float()
     d_in, d_out = X.shape[1], X.shape[1]
-    
-    #torch.nn.Sequential(*[torch.nn.Linear(d_in,512),torch.nn.ReLU(), torch.nn.Linear(512,d_out)]).cuda()
     X_torch = torch.tensor(X).float().to(device)
     X_dev_torch = torch.tensor(X_dev).float().to(device)
     
@@ -338,10 +310,7 @@ def calc_preimage_nystrom_mse(X, phi_X_debiased, X_dev, phi_X_dev_debiased, X1, 
     X_torch.requires_grad=False
     diff_torch.requires_grad=True
     mlp = (MLP(d_in, d_out)).to(device)
-    #poly_kernel(X_dev, X1)@S
     optimizer = torch.optim.Adam(mlp.parameters())
-    #optimizer = torch.optim.Adam(mlp.parameters()) #torch.optim.SGD([Z], lr = 10, momentum = 0.9)
-    #optimizer = torch.optim.SGD(mlp.parameters(), lr = 0.0001, momentum = 0.9)
     
     loss_fn = torch.nn.MSELoss()
     P_rowspace = (torch.eye(P.shape[0]).float() - torch.tensor(P).float()).to(device)
@@ -356,23 +325,6 @@ def calc_preimage_nystrom_mse(X, phi_X_debiased, X_dev, phi_X_dev_debiased, X1, 
     assert X_torch.shape[0] == phi_X_debiased_torch.shape[0]
     assert X_dev_torch.shape[0] == phi_X_dev_debiased_torch.shape[0]
     
-#     # ========== PRETRAINING ====================
-#     print("STARTING PRETRAINING")
-    
-#     for i in range(100):
-#         optimizer.zero_grad()
-#         perm = torch.randperm(X_torch.shape[0], device = device)
-#         idx = perm[:128]   
-#         inp = X_torch[idx]
-#         out = kernel_func(inp, X1_torch,gamma=gamma,degree=degree,alpha=alpha)@S_torch
-#         loss = loss_fn(mlp(inp), out)
-#         loss.backward()
-#         optimizer.step()
-#         if i % 10 == 0:
-#             print(loss)
-    
-#     print("ENDED PRETRAINING")
-#     # =========== TRAINING ======================
     for i in range(N_TOTAL):
         
         optimizer.zero_grad()
@@ -410,17 +362,15 @@ def calc_preimage_nystrom_mse(X, phi_X_debiased, X_dev, phi_X_dev_debiased, X1, 
             mean_loss = []
     
     best_mlp = best_mlp.eval()
-    #phi_Z = kernel_func(best_mlp(X_torch), X1_torch,gamma,degree,alpha)@S_torch
     with torch.no_grad():
            best_mlp.eval()
            y_dev = phi_X_dev_debiased_torch
            inp = X_dev_torch
            phi_Z_dev = kernel_func(best_mlp(inp), X1_torch,gamma=gamma,degree=degree,alpha=alpha)@S_torch
-           #L2_loss_dev = 0.5 * (((phi_Z_dev-y_dev)**2 ).sum(dim=1).mean() + ((phi_Z_dev@P_rowspace)**2 ).sum(dim=1).mean())
            L2_loss_dev = get_l2_loss(phi_Z_dev, y_dev, P_rowspace)
            L2_loss_dev = L2_loss_dev.detach().cpu().numpy().item()#
 
-    error = np.sqrt(L2_loss_dev+1e-10) #torch.sqrt(loss_fn(phi_Z, phi_X_debiased_torch)).detach().cpu().numpy()
+    error = np.sqrt(L2_loss_dev+1e-10)
     mean_norm_normalized = (phi_X_dev_debiased_torch.norm(dim=1)).mean().detach().cpu().numpy()
     
     inp = X_torch
@@ -467,12 +417,9 @@ def learn_multiple_kernels(kernels, kernel2params,X,y,numpy=False,equal_weightin
                 return np.array(out).sum(axis=0)
             else:
                 return torch.stack(out, dim=0).sum(dim=0)
-        
-            #return np.array([w*func["func"](x,y) for w,func in zip(self.weights, self.kernel_funcs)]).sum(axis=0)
-    
+            
     KLtr = []
     kernels_lst = []
-    mlps = []
 
     for kernel_type in kernels.keys():
         if kernel_type == "EasyMKL" or kernel_type == "UniformMK":
@@ -565,10 +512,10 @@ if __name__ == "__main__":
     kernels = {args.kernel_type: kernels[args.kernel_type]}
 
  if mode == "glove":
-     print("LOADING GLOVE")
+     print("Loading glove")
      X,Y,X_dev,Y_dev,X_test, Y_test = load_glove(normalize=True)
  else:
-     print("LOADING BIOS")
+     print("Loading bios")
      X,Y,X_dev,Y_dev, X_test, Y_test= load_biasbios(normalize=True)
 
  NN = 50000
@@ -636,22 +583,10 @@ if __name__ == "__main__":
                         
                         params_str = "kernel-type={}_d={}_gamma={}_degree={}_alpha={}".format(kernel_type, d, str(gamma), str(degree), str(alpha))
                         
-                        # calculate kernel
-                        
-                        #K = kernels[kernel_type]["np"](X[:],X[:],gamma, degree, alpha)
-                        #sn.heatmap(K[:500,:500])
-                        #plt.savefig("plots/glove{}/kernels/kernels-heatmaps/kernel.{}.png".format(run_ind, params_str), dpi=700)
-                        #plt.clf()
-                        #eigvals = np.linalg.eigvals(K[:2000,:2000]).real
-                        #sn.lineplot(range(len(eigvals))[:100], eigvals[:100])
-                        #plt.savefig("plots/glove{}/kernels/eigvals/eigvals.{}.png".format(run_ind, params_str), dpi=700)
-                        #plt.clf()
-
                         # run adversarial game
                         
                         RANK=1
 
-                        #ws, advs, best_adv, best_score = solve_fantope_relaxation(X_kernel, Y ,d=RANK,init_beta=None,device=DEVICE, out_iters=50000, in_iters_adv=1, in_iters_clf=1, batch_size = 128, epsilon=0.002, noise_std=0.1*np.abs(X_kernel).mean(), lr=0.005)
                         ws, advs, best_adv, best_score = solve_fantope_relaxation(X_kernel, Y ,d=RANK,init_beta=None,device=args.device, out_iters=35000, in_iters_adv=1, in_iters_clf=1, batch_size = 128, epsilon=0.025, noise_std=1e-3, lr=0.01, weight_decay=1e-5,
                         momentum=0.0)
                         
@@ -712,11 +647,6 @@ if __name__ == "__main__":
                                 with open("interim/{}{}/kernel/preimage/Z_test.{}.pickle".format(mode,run_id,params_str), "wb") as f:                       
                                     pickle.dump((Z_test, error, mean_norm_normalized, best_score), f)
                  
-                            #project_2d(Z_dev, Y_dev, mode="glove{}".format(run_ind), method="pca", title="Z-dev.run={}_{}".format(random_try,params_str))
-                            #project_2d(Z_dev[:1200], Y_dev[:1200], mode="glove{}".format(run_ind), method="tsne", title="Z-dev.run={}_{}".format(random_try, params_str))
-                            #project_2d(X_dev_kernel_proj, Y_dev, mode="glove{}".format(run_ind), method="pca", title="X-kernel-proj-dev.run={}_{}".format(random_try, params_str))
-                            #project_2d(X_dev_kernel_proj[:1200], Y_dev[:1200], mode="glove{}".format(run_ind), method="tsne", title="X-kernel-proj-dev.run={}_{}".format(random_try, params_str))                        
-                        
                         
                     
 

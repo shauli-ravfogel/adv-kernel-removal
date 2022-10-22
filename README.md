@@ -5,8 +5,8 @@ In the paper, we run a minimax concept erasure game in kernel space, in which we
 ## Algorithm
 Our method is based on applying Nystrom feature mapping to approximate the kernel features, following by the adversarial formulation presented in the papr [Linear Adversarial Concept Erasure](https://arxiv.org/abs/2201.12091) (RLACE).
 
-The file `run_kernels.py' contains the function `calc_nystrom' to calculate the nystrom features for a given kernel, and the function `calc_preimage_nystrom_mse' that calculates an approximate preiamge of the clean features in kernel space (after the removal of, e.g., gender-encoding features).
-The file ` relaxed_inlp.py' contains an implementation of the RLACE algorithm that we run over the nystrom features. 
+The file `run_kernels.py' contains the function `calc_nystrom()' to calculate the nystrom features for a given kernel, and the function `calc_preimage_nystrom_mse()' that calculates an approximate preiamge of the clean features in kernel space (after the removal of, e.g., gender-encoding features).
+The file `relaxed_inlp.py' contains an implementation of the RLACE algorithm that we run over the nystrom features. 
 
 ## Experiments
 

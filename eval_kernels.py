@@ -25,7 +25,6 @@ from sklearn.svm import LinearSVC
 
 import sklearn
 from sklearn.linear_model import LogisticRegression
-from extragradient import ExtraSGD
 import random
 import pickle
 import matplotlib.pyplot as plt

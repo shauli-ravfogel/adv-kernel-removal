@@ -25,7 +25,6 @@ import random
 import pickle
 from sklearn import cluster
 from sklearn import neural_network
-from extragradient import ExtraSGD
 import time
 
 ALPHA = 0.5*1e-4

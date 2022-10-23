@@ -1,0 +1,36 @@
+\begin{tabular}{lll}
+\toprule
+       Word &                       Neighbors before &                      Neighbors after \\
+\midrule
+       1000 &                          200, 600, 500 &                        200, 600, 500 \\
+ incredibly &                 quite, very, extremely &               quite, very, extremely \\
+      lucky &                    chance, happy, luck &                  chance, happy, luck \\
+         at &                            am, time, @ &                          am, time, @ \\
+       bear &                        dog, big, bears &                      dog, big, bears \\
+     owners &               buyers, ownership, owner &             buyers, ownership, owner \\
+         na &                              mo, o, da &                            mo, o, da \\
+       hate &                    think, stupid, dont &                  think, stupid, dont \\
+        not &                           but, be, n't &                         but, be, n't \\
+   presence &        influence, present, significant &      influence, present, significant \\
+        may &                         be, can, might &                       be, can, might \\
+     heaven &                       hell, glory, god &                     hell, glory, god \\
+    section &             article, chapter, sections &           article, chapter, sections \\
+  practical &       understanding, knowledge, useful &     understanding, knowledge, useful \\
+    context & understanding, particular, perspective &    instance, particular, perspective \\
+    deposit &                     payment, cash, fee &                   payment, cash, fee \\
+ efficiency &            improved, energy, efficient &          improved, energy, efficient \\
+composition &   characteristics, material, structure & characteristics, material, structure \\
+    instead &                   then, either, rather &               simply, either, rather \\
+     leaves &                   leave, leaving, leaf &                 leave, leaving, leaf \\
+     liquid &                  mixture, water, fluid &                mixture, water, fluid \\
+       fig. &             shown, wherein, embodiment &           shown, wherein, embodiment \\
+    husband &                 daughter, father, wife &               daughter, father, wife \\
+     bodies &                human, themselves, body &              human, themselves, body \\
+         do &                        know, want, n't &                      know, want, n't \\
+      black &                       blue, red, white &                     blue, red, white \\
+       dead &                    death, dying, alive &                  death, dying, alive \\
+individuals &            people, individual, persons &          people, individual, persons \\
+appointment &             prior, schedule, scheduled &           prior, schedule, scheduled \\
+        bid &                auction, deal, proposal &              deal, auction, proposal \\
+\bottomrule
+\end{tabular}

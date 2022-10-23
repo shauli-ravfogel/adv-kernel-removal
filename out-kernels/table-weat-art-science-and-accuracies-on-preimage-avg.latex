@@ -1,0 +1,13 @@
+\begin{tabular}{llll}
+\toprule
+   Kernel &               d &               p &        Accuracy \\
+\midrule
+  EasyMKL & 0.73 $\pm$ 0.00 & 0.08 $\pm$ 0.00 & 0.59 $\pm$ 0.15 \\
+     poly & 0.74 $\pm$ 0.01 & 0.08 $\pm$ 0.00 & 0.69 $\pm$ 0.16 \\
+UniformMK & 0.73 $\pm$ 0.00 & 0.08 $\pm$ 0.00 & 0.75 $\pm$ 0.11 \\
+      rbf & 0.74 $\pm$ 0.00 & 0.08 $\pm$ 0.00 & 0.54 $\pm$ 0.02 \\
+   linear & 0.74 $\pm$ 0.00 & 0.08 $\pm$ 0.00 & 0.49 $\pm$ 0.00 \\
+  laplace & 0.71 $\pm$ 0.03 & 0.09 $\pm$ 0.01 & 0.69 $\pm$ 0.01 \\
+  sigmoid & 0.75 $\pm$ 0.02 & 0.08 $\pm$ 0.01 & 0.49 $\pm$ 0.00 \\
+\bottomrule
+\end{tabular}

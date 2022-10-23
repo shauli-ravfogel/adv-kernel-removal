@@ -1,0 +1,14 @@
+\begin{tabular}{lll}
+\toprule
+       Kernel &               d &               p \\
+\midrule
+      EasyMKL & 0.73 $\pm$ 0.00 & 0.08 $\pm$ 0.00 \\
+         poly & 0.74 $\pm$ 0.01 & 0.08 $\pm$ 0.00 \\
+    UniformMK & 0.73 $\pm$ 0.00 & 0.08 $\pm$ 0.00 \\
+          rbf & 0.74 $\pm$ 0.00 & 0.08 $\pm$ 0.00 \\
+       linear & 0.74 $\pm$ 0.00 & 0.08 $\pm$ 0.00 \\
+      laplace & 0.71 $\pm$ 0.03 & 0.09 $\pm$ 0.01 \\
+UniformMK-RBF & 0.74 $\pm$ 0.00 & 0.08 $\pm$ 0.00 \\
+      sigmoid & 0.75 $\pm$ 0.02 & 0.08 $\pm$ 0.01 \\
+\bottomrule
+\end{tabular}

@@ -1,0 +1,8 @@
+,type,Accuracy
+0,poly,0.59 $\pm$ 0.15
+1,rbf,0.69 $\pm$ 0.16
+2,laplace,0.75 $\pm$ 0.11
+3,linear,0.54 $\pm$ 0.02
+4,sigmoid,0.49 $\pm$ 0.00
+5,EasyMKL,0.69 $\pm$ 0.01
+6,UniformMK,0.49 $\pm$ 0.00
